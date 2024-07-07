@@ -1,0 +1,24 @@
+{
+  "name": "zksyncDefiTogether",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Abhishek",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "zksync",
+    "frontend"
+  ],
+  "scripts": {
+    "serve:ui": "yarn workspace frontend dev",
+    "deploy:contracts": "yarn workspace zksync deploy",
+    "deploy:greeter": "yarn workspace zksync greeter",
+    "deploy:nft": "yarn workspace zksync nft",
+    "deploy:paymaster": "yarn workspace zksync paymaster",
+    "compile:contracts": "yarn workspace zksync compile",
+    "format": "prettier --write \"{frontend,zksync}/**/*.{ts,js,jsx,tsx}\""
+  },
+  "dependencies": {
+    "prettier": "^3.0.0"
+  }
+}
