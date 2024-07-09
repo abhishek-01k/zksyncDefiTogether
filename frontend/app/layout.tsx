@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import Web3Context from "./context/Web3Context";
 import { PowerStoneNft } from "./types/types";
 import { Contract, Web3Provider, Signer } from "zksync-ethers";
-import Navbar from "./components/navigation/Navbar";
+import MainNavbar from "./components/navigation/MainNavbar";
 import Footer from "./components/navigation/Footer";
 import { ChakraProvider } from '@chakra-ui/react';
 import "@rainbow-me/rainbowkit/styles.css";
@@ -88,7 +88,7 @@ export default function RootLayout({
                 initialChain={zkSyncTestnet}
                 chains={chains}
               >
-                <Navbar />
+                <MainNavbar />
                 {children}
                 <Footer />
               </RainbowKitProvider>

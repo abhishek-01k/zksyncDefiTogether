@@ -1,3 +1,4 @@
+"use client";
 import { ReactElement, useEffect, useState } from "react";
 import {
   Box,
@@ -16,8 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { FcAssistant, FcDonate, FcInTransit } from "react-icons/fc";
 import styles from "../styles/Home.module.css";
-// import { SwapWidget } from "@uniswap/widgets";
-import "@uniswap/widgets/fonts.css";
 import { ethers } from "ethers";
 import dynamic from "next/dynamic";
 
@@ -30,17 +29,11 @@ const Feature = ({ title, text }: any) => {
   );
 };
 
-const SwapWidget = dynamic(
-  async () => {
-    const res = await import("@uniswap/widgets");
-    return res.SwapWidget;
-  },
-  { ssr: false }
-);
 
 export default function SimpleThreeColumns() {
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
-
+  const [usdcAmount , setUsdcAmount] = useState();
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       setProvider(new ethers.providers.Web3Provider((window as any).ethereum));
@@ -116,23 +109,6 @@ export default function SimpleThreeColumns() {
           </Button>
           </SimpleGrid>
         </Container>
-        <Container maxW={"sm"}>
-          <Text fontSize="2xl" color="orange.400" as="b">
-            Convert
-          </Text>
-          <br /><br />
-          {/* TODO: Display - Simple Swap, Source Currenct selected <-> Selected Currency, Take Uniswap Container */}
-          <div className="Uniswap">
-            <SwapWidget
-              provider={provider}
-              jsonRpcUrlMap={{
-                1: [
-                  "https://zksync2-testnet.zksync.dev/4cFAs0QuovChZUauL9BpUusRb7wHwUYa",
-                ],
-              }}
-            />
-          </div>
-        </Container>
 
         <Container>
           <Text fontSize="2xl" color="orange.500" as="b">
@@ -154,7 +130,7 @@ export default function SimpleThreeColumns() {
           <FormControl display="flex" alignItems="center" py={8}>
             <Switch id="wallet1" px={4} size="lg" colorScheme={"green"} />
             <FormLabel htmlFor="email-alerts" mb="0" fontSize="xl">
-              0x7c43370367fa81D4FE9CE6161Fe60AFFfe7c8bAA
+              0x123
             </FormLabel>
           </FormControl>
           <br />

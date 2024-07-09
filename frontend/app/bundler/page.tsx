@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import {
@@ -33,10 +34,10 @@ export default function Bundler() {
             <Text
               as={"span"}
               fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
-              fontWeight={700}
+              fontWeight={500}
               color={"orange.300"}
             >
-              zAAp Now!
+              Lets do DefiTogether 👨🏻 🤝 👨🏻 
             </Text>
             {/* Image Container */}
             {/* <Container centerContent maxW={"3xl"}>
@@ -84,7 +85,7 @@ export default function Bundler() {
                     transition: "all 2s ease",
                   }}
               >
-                Swap Now!
+                Swap 🚀
               </Button>
             </Stack>
           </Stack>
