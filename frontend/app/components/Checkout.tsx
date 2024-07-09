@@ -138,7 +138,7 @@ export default function Checkout({
               </div>
             ) : (
               <Text>
-                Unfortunately, you don't own an Infinity Stone NFT. A small gas
+                Unfortunately, you don&apos;t own an Infinity Stone NFT. A small gas
                 fee will be charged to update the greeting.
               </Text>
             )}
