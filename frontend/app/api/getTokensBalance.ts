@@ -1,12 +1,13 @@
 import { Network, Alchemy } from "alchemy-sdk";
 import {
-	mainnet,
-	zkSync,
-	zkSyncTestnet,
-	goerli,
+  mainnet,
+  zkSync,
+  zkSyncTestnet,
+  goerli,
 } from "wagmi/chains";
 
 export default async function handler(
+  // @ts-expect-error
   req, res
 ) {
   const { address, chain } = JSON.parse(req.body);
@@ -16,6 +17,7 @@ export default async function handler(
   }
   const settings = {
     apiKey: process.env.ALCHEMY_API_KEY,
+    // @ts-expect-error
     network: Network[chain],
   };
 
@@ -47,7 +49,7 @@ export default async function handler(
         return metadata;
       })
     );
-    
+
     const unifiedBalancedAndMetadata = [ethBalanceObject];
 
     for (let x = 0; x < fetchedTokenMetadata.length - 1; x++) {
@@ -58,6 +60,7 @@ export default async function handler(
       let convertedBalance;
 
       if (hexBalance && tokenMetadata.decimals) {
+        // @ts-expect-error
         convertedBalance = parseInt(hexBalance) / Math.pow(10, decimals);
         if (convertedBalance > 0) {
           const tokenBalanceAndMetadata = {
@@ -68,6 +71,7 @@ export default async function handler(
             balance: convertedBalance.toPrecision(2),
             address,
           };
+          // @ts-expect-error
           unifiedBalancedAndMetadata.push(tokenBalanceAndMetadata);
         }
       }
@@ -86,5 +90,5 @@ const settings = {
   apiKey: process.env.ALCHEMY_API_KEY,
   network: "https://zksync2-testnet.zksync.dev",
 };
-
+// @ts-expect-error
 const alchemy = new Alchemy(settings);

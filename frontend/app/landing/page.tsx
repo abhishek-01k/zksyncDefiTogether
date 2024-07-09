@@ -11,10 +11,10 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 import TokensBalanceDisplay from "../../../frontend/app/components/tokensBalanceDisplay";
-import { useRouter } from "next/router";
-import zksync from "../public/zksync.png";
+import zksync from "../../public/zksync.png";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();

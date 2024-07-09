@@ -43,7 +43,7 @@ export default function RootLayout({
     [
       mainnet,
       zkSync,
-      zkSyncTestnet,
+      // zkSyncTestnet,
       goerli,
     ],
     [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string }), publicProvider()]
@@ -85,7 +85,7 @@ export default function RootLayout({
             <WagmiConfig client={wagmiClient}>
               <RainbowKitProvider
                 modalSize="compact"
-                initialChain={zkSyncTestnet}
+                initialChain={zkSync}
                 chains={chains}
               >
                 <MainNavbar />
