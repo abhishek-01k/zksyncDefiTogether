@@ -2,10 +2,32 @@
 
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { useState } from "react";
 import Web3Context from "./context/Web3Context";
 import { PowerStoneNft } from "./types/powerStoneNft";
 import { Contract, Web3Provider, Signer } from "zksync-ethers";
+import Navbar from "./components/navigation/Navbar";
+import Footer from "./components/navigation/Footer";
+import { ChakraProvider } from '@chakra-ui/react';
+
+
+import "@rainbow-me/rainbowkit/styles.css";
+import React, { FC, useState } from "react";
+import { ethers } from "ethers";
+
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import {
+	mainnet,
+	zkSync,
+	zkSyncTestnet,
+	goerli,
+} from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+import MainLayout from "../layout/mainLayout";
+import dynamic from "next/dynamic";
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -17,10 +39,34 @@ export default function RootLayout({
     useState<Contract | null>(null);
   const [greeting, setGreetingMessage] = useState<string>("");
   const [nfts, setNfts] = useState<PowerStoneNft[]>([]);
-  const [provider, setProvider] = useState<Web3Provider | null>(null);
   const [signer, setSigner] = useState<Signer | null>(null);
+
+
+
+const { chains, provider } = configureChains(
+	[
+		mainnet,
+		zkSync,
+		zkSyncTestnet,
+		goerli,
+	],
+	[alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()]
+);
+
+const { connectors } = getDefaultWallets({
+	appName: "zkSyncDefiTogether",
+	chains,
+});
+
+const wagmiClient = createClient({
+	autoConnect: true,
+	connectors,
+	provider,
+});
+  
   return (
     <html lang="en">
+      <ChakraProvider>
       <Web3Context.Provider
         value={{
           greeterContractInstance,
@@ -30,13 +76,25 @@ export default function RootLayout({
           nfts,
           setNfts,
           provider,
-          setProvider,
           signer,
           setSigner,
         }}
       >
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+        <WagmiConfig client={wagmiClient}>
+				<RainbowKitProvider
+					modalSize="compact"
+					initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN}
+					chains={chains}
+				>
+          <Navbar />
+          {children}
+          <Footer />
+          </RainbowKitProvider>
+          </WagmiConfig>
+          </body>
       </Web3Context.Provider>
+      </ChakraProvider>
     </html>
   );
 }
