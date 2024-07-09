@@ -1,6 +1,7 @@
 const { ethers } = require("ethers");
 const { Provider, zksync, Wallet } = require("zksync-web3");
 const { Deployer } = require("@matterlabs/hardhat-zksync-deploy");
+const hre = require("hardhat");
 
 const ercAbi = [
   // Read-Only Functions

@@ -8,8 +8,6 @@ import { Contract, Web3Provider, Signer } from "zksync-ethers";
 import Navbar from "./components/navigation/Navbar";
 import Footer from "./components/navigation/Footer";
 import { ChakraProvider } from '@chakra-ui/react';
-
-
 import "@rainbow-me/rainbowkit/styles.css";
 import React, { FC, useState } from "react";
 import { ethers } from "ethers";
@@ -17,10 +15,11 @@ import { ethers } from "ethers";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import {
-	mainnet,
-	zkSync,
-	zkSyncTestnet,
-	goerli,
+  mainnet,
+  zkSync,
+  zkSyncTestnet,
+  goerli,
+  sepolia,
 } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -43,57 +42,58 @@ export default function RootLayout({
 
 
 
-const { chains, provider } = configureChains(
-	[
-		mainnet,
-		zkSync,
-		zkSyncTestnet,
-		goerli,
-	],
-	[alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()]
-);
+  const { chains, provider } = configureChains(
+    [
+      mainnet,
+      zkSync,
+      zkSyncTestnet,
+      goerli,
+    ],
+    [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string }), publicProvider()]
+  );
 
-const { connectors } = getDefaultWallets({
-	appName: "zkSyncDefiTogether",
-	chains,
-});
+  const { connectors } = getDefaultWallets({
+    appName: "zkSyncDefiTogether",
+    projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
+    chains,
+  });
 
-const wagmiClient = createClient({
-	autoConnect: true,
-	connectors,
-	provider,
-});
-  
+  const wagmiClient = createClient({
+    autoConnect: true,
+    connectors,
+    provider,
+  });
+
   return (
     <html lang="en">
       <ChakraProvider>
-      <Web3Context.Provider
-        value={{
-          greeterContractInstance,
-          setGreeterContractInstance,
-          greeting,
-          setGreetingMessage,
-          nfts,
-          setNfts,
-          provider,
-          signer,
-          setSigner,
-        }}
-      >
-        <body className={inter.className}>
-        <WagmiConfig client={wagmiClient}>
-				<RainbowKitProvider
-					modalSize="compact"
-					initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN}
-					chains={chains}
-				>
-          <Navbar />
-          {children}
-          <Footer />
-          </RainbowKitProvider>
-          </WagmiConfig>
+        <Web3Context.Provider
+          value={{
+            greeterContractInstance,
+            setGreeterContractInstance,
+            greeting,
+            setGreetingMessage,
+            nfts,
+            setNfts,
+            provider,
+            signer,
+            setSigner,
+          }}
+        >
+          <body className={inter.className}>
+            <WagmiConfig client={wagmiClient}>
+              <RainbowKitProvider
+                modalSize="compact"
+                initialChain={zkSyncTestnet}
+                chains={chains}
+              >
+                <Navbar />
+                {children}
+                <Footer />
+              </RainbowKitProvider>
+            </WagmiConfig>
           </body>
-      </Web3Context.Provider>
+        </Web3Context.Provider>
       </ChakraProvider>
     </html>
   );
