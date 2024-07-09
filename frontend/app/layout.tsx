@@ -3,7 +3,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Web3Context from "./context/Web3Context";
-import { PowerStoneNft } from "./types/powerStoneNft";
+import { PowerStoneNft } from "./types/types";
 import { Contract, Web3Provider, Signer } from "zksync-ethers";
 import Navbar from "./components/navigation/Navbar";
 import Footer from "./components/navigation/Footer";
@@ -23,9 +23,6 @@ import {
 } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import MainLayout from "../layout/mainLayout";
-import dynamic from "next/dynamic";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,10 +36,10 @@ export default function RootLayout({
   const [greeting, setGreetingMessage] = useState<string>("");
   const [nfts, setNfts] = useState<PowerStoneNft[]>([]);
   const [signer, setSigner] = useState<Signer | null>(null);
+  const [provider, setProvider] = useState<Web3Provider | null>(null);
 
 
-
-  const { chains, provider } = configureChains(
+  const rainbow = configureChains(
     [
       mainnet,
       zkSync,
@@ -51,6 +48,9 @@ export default function RootLayout({
     ],
     [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string }), publicProvider()]
   );
+
+  const chains = rainbow?.chains;
+  const rainbowprovider = rainbow?.provider;
 
   const { connectors } = getDefaultWallets({
     appName: "zkSyncDefiTogether",
@@ -61,7 +61,7 @@ export default function RootLayout({
   const wagmiClient = createClient({
     autoConnect: true,
     connectors,
-    provider,
+    provider: rainbowprovider,
   });
 
   return (
@@ -76,6 +76,7 @@ export default function RootLayout({
             nfts,
             setNfts,
             provider,
+            setProvider,
             signer,
             setSigner,
           }}
